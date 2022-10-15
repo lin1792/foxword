@@ -13,6 +13,9 @@ const wisdom = () => {
 const secret = () => {
   router.push('/fox/secret');
 };
+const logout = () => {
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -78,6 +81,7 @@ const secret = () => {
           <div class="search iconfont icon-sousuo">
             <input type="text" placeholder="搜索" />
           </div>
+          <div class="user" @click="logout">退出</div>
         </div>
       </div>
     </header>
@@ -154,6 +158,9 @@ const secret = () => {
             background-color: transparent;
             padding-left: 5px;
           }
+        }
+        .user {
+          cursor: pointer;
         }
       }
     }

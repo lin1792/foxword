@@ -8,12 +8,17 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
+    copy: typeof import('./src/components/login/LoginLeft copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     Head: typeof import('./src/components/header/head.vue')['default']
     HeadNav: typeof import('./src/components/header/HeadNav.vue')['default']
     HomeContent: typeof import('./src/components/home/HomeContent.vue')['default']
+    LoginCover: typeof import('./src/components/login/LoginCover.vue')['default']
+    LoginLeft: typeof import('./src/components/login/LoginLeft.vue')['default']
+    LoginRight: typeof import('./src/components/login/LoginRight.vue')['default']
+    LoginTable: typeof import('./src/components/login/LoginTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

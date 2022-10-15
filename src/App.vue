@@ -120,7 +120,9 @@ const options = reactive({
 <template>
   <div class="container" v-lazy:background-image="img09">
     <el-scrollbar class="ad">
-      <router-view name="common"></router-view>
+      <transition name="panel">
+        <router-view name="common"></router-view>
+      </transition>
       <Particles
         id="tsparticles"
         :particlesInit="particlesInit"
@@ -132,6 +134,24 @@ const options = reactive({
 </template>
 
 <style lang="less" scoped>
+.panel-enter-from {
+  opacity: 0;
+}
+.panel-enter-active {
+  transition: all 0.3s linear;
+}
+.panel-enter-to {
+  opacity: 1;
+}
+// .panel-leave-from {
+//   opacity: 1;
+// }
+// .panel-leave-active {
+//   transition: all 0.3s linear;
+// }
+// .panel-leave-to {
+//   opacity: 0;
+// }
 .container {
   width: 100vw;
   height: 100vh;
