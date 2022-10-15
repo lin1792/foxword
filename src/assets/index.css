@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "YouSheBiaoTiHei";
+  src: url("@/assets/font-family/YouSheBiaoTiHei.ttf") format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -moz-user-select: none;
+  /*火狐*/
+  -webkit-user-select: none;
+  /*webkit浏览器*/
+  -ms-user-select: none;
+  /*IE10*/
+  -khtml-user-select: none;
+  /*早期浏览器*/
+  user-select: none;
+}
+
+input {
+  outline: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* 代码片 */
+/* pre {
+  /* display: flex; */
+
+
+pre code.hljs {
+  border-radius: 10px;
+}
+
+.hljs-ln-numbers {
+  text-align: center;
+  color: #ccc;
+  border-right: 1px solid rgb(145, 144, 144);
+  /* background-color: #fff; */
+  vertical-align: top;
+  padding-right: 20px !important;
+  height: 100%;
+  /* your custom style here */
+}
+
+/* 修改代码列样式 */
+.hljs-ln-code {
+  padding-left: 20px !important;
+}
