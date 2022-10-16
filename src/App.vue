@@ -12,6 +12,7 @@ import img07 from './assets/image/bgi07.jpg';
 import img08 from './assets/image/bgi08.png';
 import img09 from './assets/image/bgi09.png';
 import img10 from './assets/image/bgi10.png';
+import img091 from './assets/image/bgi091.png';
 import img11 from './assets/image/daojian.jpg';
 
 const a = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
@@ -120,7 +121,7 @@ const options = reactive({
 });
 </script>
 <template>
-  <div class="container" v-lazy:background-image="img11">
+  <div class="container" v-lazy:background-image="img091">
     <el-scrollbar class="ad">
       <transition name="panel">
         <router-view name="common"></router-view>

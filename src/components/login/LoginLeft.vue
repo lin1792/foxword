@@ -14,7 +14,7 @@ const toggle = () => {
 };
 
 const login = () => {
-  useuserlogin('1', '2');
+  useuserlogin('123', 'aad');
   sessionStorage.setItem('token', '登录成功');
   router.push('/fox/home');
 };

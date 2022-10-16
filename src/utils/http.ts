@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 
 // axios.defaults.baseURL = localStorage.getItem('BASE_URL')?.toString()
-axios.defaults.baseURL = '/sys';
+axios.defaults.baseURL = '/api';
 axios.defaults.timeout = 20 * 1000;
 axios.defaults.maxBodyLength = 5 * 1024 * 1024;
 axios.defaults.withCredentials = true;
@@ -19,8 +19,8 @@ axios.interceptors.request.use(
     // if (token) {
     //   config.headers.token = token;
     // }
-    const rediskey = sessionStorage.getItem('rediskey');
-    config.headers.redisKey = rediskey;
+    // const rediskey = sessionStorage.getItem('rediskey');
+    // config.headers.redisKey = rediskey;
     return config;
   },
   function (error) {
