@@ -14,6 +14,7 @@ const secret = () => {
   router.push('/fox/secret');
 };
 const logout = () => {
+  sessionStorage.clear();
   router.push('/login');
 };
 </script>

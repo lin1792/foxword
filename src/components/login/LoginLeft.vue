@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
@@ -9,14 +10,21 @@ const useLogin = useLoginStore();
 const { site } = storeToRefs(useLogin);
 const { useuserlogin } = useLogin;
 
+const form = reactive({
+  account: '',
+  password: '',
+});
+
 const toggle = () => {
   site.value === 'left' ? (site.value = 'right') : (site.value = 'left');
 };
 
-const login = () => {
-  useuserlogin('123', 'aad');
-  sessionStorage.setItem('token', '登录成功');
-  router.push('/fox/home');
+const login = async () => {
+  await useuserlogin(form.account, form.password).then(() => {
+    if (sessionStorage.getItem('message') === '操作成功') {
+      router.push('/fox/home');
+    }
+  });
 };
 </script>
 
@@ -26,9 +34,14 @@ const login = () => {
       <div class="top">登录</div>
       <div class="center">
         <div class="account">账号</div>
-        <input class="ipt1" type="text" placeholder="请输入" />
+        <input
+          v-model="form.account"
+          class="ipt1"
+          type="text"
+          placeholder="请输入"
+        />
         <div class="password">密码</div>
-        <input type="text" placeholder="请输入" />
+        <input v-model="form.password" type="text" placeholder="请输入" />
       </div>
       <div class="bottom">
         <button @click="login">登录</button>

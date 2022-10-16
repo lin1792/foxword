@@ -51,7 +51,7 @@ router.beforeEach((to, from, next) => {
     console.log('需要登录');
     if (sessionStorage.token) {
       // 判断当前的token是否存在 ； 登录存入的token
-      if (sessionStorage.token === '登录成功') {
+      if (sessionStorage.message === '操作成功') {
         next();
       } else {
         next({

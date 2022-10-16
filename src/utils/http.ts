@@ -19,8 +19,8 @@ axios.interceptors.request.use(
     // if (token) {
     //   config.headers.token = token;
     // }
-    // const rediskey = sessionStorage.getItem('rediskey');
-    // config.headers.redisKey = rediskey;
+    const token = sessionStorage.getItem('token');
+    config.headers.Authorization = token;
     return config;
   },
   function (error) {

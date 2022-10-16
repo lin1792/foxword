@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
 const useLogin = useLoginStore();
 const { site } = storeToRefs(useLogin);
+const { useRegister, useGetisRepeated, useGetsendCode } = useLogin;
+
+const form = reactive({
+  nickname: '',
+  account: '',
+  password: '',
+  tel: '',
+  email: '',
+  sendcode: '',
+});
 
 const finish = ref(false);
 
@@ -14,6 +24,13 @@ const get = ref(false);
 const toggle = () => {
   site.value === 'left' ? (site.value = 'right') : (site.value = 'left');
   finish.value = false;
+};
+
+// 账号查重
+const getisrepeated = () => {
+  if (form.account !== '') {
+    useGetisRepeated(form.account);
+  }
 };
 
 const getCode = () => {
@@ -39,27 +56,47 @@ const register = () => {
     <div v-if="!finish" :class="'left_box'">
       <div class="top">注册</div>
       <div class="center">
-        <div class="password"><span>*</span>账号</div>
-        <div class="input"><input type="text" placeholder="请输入" /></div>
-        <div class="password"><span>*</span>密码</div>
-        <div class="input"><input type="text" placeholder="请输入" /></div>
-        <div class="password"><span>*</span>手机号码</div>
+        <div class="nickname"><span>*</span>昵称</div>
         <div class="input">
-          <input type="text" placeholder="请输入" />
+          <input v-model="form.nickname" type="text" placeholder="请输入" />
         </div>
-        <div class="account"><span>*</span>邮箱</div>
+        <div class="account"><span>*</span>账号</div>
         <div class="input">
-          <input type="text" class="mail" placeholder="请输入" /><i
-            v-show="!get"
-            @click="getCode"
-            >获取验证码</i
+          <input
+            v-model="form.account"
+            type="text"
+            placeholder="请输入"
+            @blur="getisrepeated"
+          />
+        </div>
+        <div class="password"><span>*</span>密码</div>
+        <div class="input">
+          <input v-model="form.password" type="text" placeholder="请输入" />
+        </div>
+        <div class="tel"><span>*</span>手机号码</div>
+        <div class="input">
+          <input v-model="form.tel" type="text" placeholder="请输入" />
+        </div>
+        <div class="email"><span>*</span>邮箱</div>
+        <div class="input">
+          <input
+            v-model="form.email"
+            type="text"
+            class="mail"
+            placeholder="请输入"
+          /><i v-show="!get" @click="getCode">获取验证码</i
           ><i v-show="get" style="text-decoration: none; padding: 0 10px"
             >{{ code }} S</i
           >
         </div>
-        <div class="yanzhen"><span>*</span>验证码</div>
+        <div class="sendcode"><span>*</span>验证码</div>
         <div class="input">
-          <input type="text" class="ipt_last" placeholder="请输入" />
+          <input
+            v-model="form.sendcode"
+            type="text"
+            class="ipt_last"
+            placeholder="请输入"
+          />
         </div>
       </div>
       <div class="bottom">
@@ -103,7 +140,7 @@ const register = () => {
     flex-direction: column;
     align-items: center;
     width: 300px;
-    height: 420px;
+    height: 490px;
     // background-color: rgb(5, 240, 221);
     // margin-bottom: 80px;
     .top {

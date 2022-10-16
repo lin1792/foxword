@@ -47,8 +47,8 @@ const { site } = storeToRefs(useLogin);
   .login_box {
     display: flex;
     position: absolute;
-    width: 800px;
-    height: 500px;
+    width: 900px;
+    height: 550px;
     .left {
       flex: 1;
       // background-color: rgba(0, 255, 255, 0.832);
