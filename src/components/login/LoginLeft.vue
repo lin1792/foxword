@@ -13,6 +13,7 @@ const toggle = () => {
 };
 
 const login = () => {
+  sessionStorage.setItem('token', '登录成功');
   router.push('/fox/home');
 };
 </script>

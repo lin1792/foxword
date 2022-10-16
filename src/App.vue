@@ -12,6 +12,8 @@ import img07 from './assets/image/bgi07.jpg';
 import img08 from './assets/image/bgi08.png';
 import img09 from './assets/image/bgi09.png';
 import img10 from './assets/image/bgi10.png';
+import img11 from './assets/image/daojian.jpg';
+
 const a = Math.floor(Math.random() * (9 - 0 + 1)) + 0;
 const arr = [
   img01,
@@ -65,9 +67,9 @@ const options = reactive({
       remove: {
         quantity: 2,
       },
-      // push: {
-      //   quantity: 2,
-      // },
+      push: {
+        quantity: 0,
+      },
       repulse: {
         distance: 200,
         duration: 0.4,
@@ -118,7 +120,7 @@ const options = reactive({
 });
 </script>
 <template>
-  <div class="container" v-lazy:background-image="img09">
+  <div class="container" v-lazy:background-image="img11">
     <el-scrollbar class="ad">
       <transition name="panel">
         <router-view name="common"></router-view>
@@ -143,19 +145,11 @@ const options = reactive({
 .panel-enter-to {
   opacity: 1;
 }
-// .panel-leave-from {
-//   opacity: 1;
-// }
-// .panel-leave-active {
-//   transition: all 0.3s linear;
-// }
-// .panel-leave-to {
-//   opacity: 0;
-// }
+
 .container {
   width: 100vw;
   height: 100vh;
-
+  background-size: cover;
   :deep(.el-scrollbar__bar.is-vertical) {
     width: 6px;
     background-color: rgba(0, 229, 255, 0.374);

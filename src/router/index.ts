@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/fox',
       name: 'fox',
-      // meta: { requireAuth: true },
+      meta: { requireAuth: true },
       components: { common: () => import('@/views/CommonView.vue') },
       redirect: '/fox/home',
       children: [
