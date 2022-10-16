@@ -7,12 +7,14 @@ const router = useRouter();
 
 const useLogin = useLoginStore();
 const { site } = storeToRefs(useLogin);
+const { useuserlogin } = useLogin;
 
 const toggle = () => {
   site.value === 'left' ? (site.value = 'right') : (site.value = 'left');
 };
 
 const login = () => {
+  useuserlogin('1', '2');
   sessionStorage.setItem('token', '登录成功');
   router.push('/fox/home');
 };

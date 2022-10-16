@@ -25,17 +25,19 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3008, // 服务端口号
+    host: 'localhost',
+    // port: 3008,
+    // 服务端口号
+    // port: 8080,
     open: true, // 服务启动时是否自动打开浏览器
-    /*
-     * cors: true, // 允许跨域
-     * proxy: {
-     *   '/api': {
-     *     target: 'http://localhost:3000',
-     *     changeOrigin: true,
-     *     rewrite: path => path.replace('/api', '')
-     *   }
-     * }
-     */
+
+    cors: true, // 允许跨域
+    proxy: {
+      '/sys': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace('/sys', ''),
+      },
+    },
   },
 });
