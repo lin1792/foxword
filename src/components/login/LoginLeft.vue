@@ -15,6 +15,28 @@ const form = reactive({
   password: '',
 });
 
+const form_status = reactive({
+  account: 0,
+  password: 0,
+});
+
+const isempty = (item: string) => {
+  if (item === 'account') {
+    if (form.account !== '') {
+      form_status.account = 0;
+    } else {
+      form_status.account = 1;
+    }
+  }
+  if (item === 'password') {
+    if (form.password !== '') {
+      form_status.password = 0;
+    } else {
+      form_status.password = 1;
+    }
+  }
+};
+
 const toggle = () => {
   site.value === 'left' ? (site.value = 'right') : (site.value = 'left');
 };
@@ -36,12 +58,20 @@ const login = async () => {
         <div class="account">账号</div>
         <input
           v-model="form.account"
+          :class="form_status.account === 1 ? 'empty' : ''"
           class="ipt1"
           type="text"
           placeholder="请输入"
+          @blur="isempty('account')"
         />
         <div class="password">密码</div>
-        <input v-model="form.password" type="text" placeholder="请输入" />
+        <input
+          v-model="form.password"
+          :class="form_status.password === 1 ? 'empty' : ''"
+          type="text"
+          placeholder="请输入"
+          @blur="isempty('password')"
+        />
       </div>
       <div class="bottom">
         <button @click="login">登录</button>
@@ -96,6 +126,12 @@ const login = async () => {
         font-size: 13px;
         color: rgba(128, 128, 128, 0.726);
         letter-spacing: 1px;
+      }
+      .empty {
+        border-color: rgb(255, 3, 3);
+      }
+      .empty::placeholder {
+        color: rgba(213, 25, 25, 0.532);
       }
       .ipt1 {
         margin-bottom: 10px;

@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
 const useLogin = useLoginStore();
-const { site } = storeToRefs(useLogin);
+const { site, sendcode, isrepeated, register_status } = storeToRefs(useLogin);
 const { useRegister, useGetisRepeated, useGetsendCode } = useLogin;
 
 const form = reactive({
@@ -13,6 +13,14 @@ const form = reactive({
   tel: '',
   email: '',
   sendcode: '',
+});
+const form_status = reactive({
+  nickname: 0,
+  account: 0,
+  password: 0,
+  tel: 0,
+  email: 0,
+  sendcode: 0,
 });
 
 const finish = ref(false);
@@ -33,20 +41,90 @@ const getisrepeated = () => {
   }
 };
 
-const getCode = () => {
-  get.value = true;
-  const remove = setInterval(() => {
-    code.value--;
-    if (code.value === -1) {
-      code.value = 60;
-      get.value = false;
-      clearInterval(remove);
+const isempty = (item: string) => {
+  if (item === 'nickname') {
+    if (form.nickname !== '') {
+      form_status.nickname = 0;
+    } else {
+      form_status.nickname = 1;
     }
-  }, 1000);
+  }
+  if (item === 'account') {
+    if (form.account !== '') {
+      form_status.account = 0;
+    } else {
+      form_status.account = 1;
+    }
+  }
+  if (item === 'password') {
+    if (form.password !== '') {
+      form_status.password = 0;
+    } else {
+      form_status.password = 1;
+    }
+  }
+  if (item === 'tel') {
+    if (form.tel !== '') {
+      form_status.tel = 0;
+    } else {
+      form_status.tel = 1;
+    }
+  }
+  if (item === 'email') {
+    if (form.email !== '') {
+      form_status.email = 0;
+    } else {
+      form_status.email = 1;
+    }
+  }
+  if (item === 'sendcode') {
+    if (form.sendcode !== '') {
+      form_status.sendcode = 0;
+    } else {
+      form_status.sendcode = 1;
+    }
+  }
 };
 
-const register = () => {
-  finish.value = true;
+const getCode = async () => {
+  await useGetsendCode(form.email, form.nickname).then(() => {
+    get.value = true;
+    const remove = setInterval(() => {
+      code.value--;
+      if (code.value === -1) {
+        code.value = 60;
+        get.value = false;
+        clearInterval(remove);
+      }
+    }, 1000);
+  });
+};
+
+const register = async () => {
+  const isfulled = ref(
+    form.nickname !== '' &&
+      form.account !== '' &&
+      form.password !== '' &&
+      form.tel !== '' &&
+      form.email !== '' &&
+      form.sendcode !== ''
+  );
+
+  const issendcode = form.sendcode === sendcode.value;
+
+  if (isfulled.value && issendcode && isrepeated.value === false) {
+    await useRegister(
+      form.account,
+      form.password,
+      form.nickname,
+      form.tel,
+      form.email
+    ).then(() => {
+      if (register_status.value) {
+        finish.value = true;
+      }
+    });
+  }
 };
 </script>
 
@@ -58,32 +136,53 @@ const register = () => {
       <div class="center">
         <div class="nickname"><span>*</span>昵称</div>
         <div class="input">
-          <input v-model="form.nickname" type="text" placeholder="请输入" />
+          <input
+            v-model="form.nickname"
+            :class="form_status.nickname === 1 ? 'empty' : ''"
+            type="text"
+            placeholder="请输入"
+            @blur="isempty('nickname')"
+          />
         </div>
         <div class="account"><span>*</span>账号</div>
         <div class="input">
           <input
             v-model="form.account"
+            :class="form_status.account === 1 ? 'empty' : ''"
             type="text"
             placeholder="请输入"
-            @blur="getisrepeated"
+            @blur="getisrepeated(), isempty('account')"
           />
         </div>
         <div class="password"><span>*</span>密码</div>
         <div class="input">
-          <input v-model="form.password" type="text" placeholder="请输入" />
+          <input
+            v-model="form.password"
+            :class="form_status.password === 1 ? 'empty' : ''"
+            type="text"
+            placeholder="请输入"
+            @blur="isempty('password')"
+          />
         </div>
         <div class="tel"><span>*</span>手机号码</div>
         <div class="input">
-          <input v-model="form.tel" type="text" placeholder="请输入" />
+          <input
+            v-model="form.tel"
+            :class="form_status.tel === 1 ? 'empty' : ''"
+            type="text"
+            placeholder="请输入"
+            @blur="isempty('tel')"
+          />
         </div>
         <div class="email"><span>*</span>邮箱</div>
         <div class="input">
           <input
             v-model="form.email"
+            :class="form_status.email === 1 ? 'empty' : ''"
             type="text"
             class="mail"
             placeholder="请输入"
+            @blur="isempty('email')"
           /><i v-show="!get" @click="getCode">获取验证码</i
           ><i v-show="get" style="text-decoration: none; padding: 0 10px"
             >{{ code }} S</i
@@ -93,9 +192,11 @@ const register = () => {
         <div class="input">
           <input
             v-model="form.sendcode"
+            :class="form_status.sendcode === 1 ? 'empty' : ''"
             type="text"
             class="ipt_last"
             placeholder="请输入"
+            @blur="isempty('sendcode')"
           />
         </div>
       </div>
@@ -179,6 +280,17 @@ const register = () => {
           color: rgba(128, 128, 128, 0.726);
           letter-spacing: 1px;
         }
+        input:focus {
+          border-color: rgba(0, 255, 255, 0.832);
+          box-shadow: 0 0 1px 1px rgba(0, 255, 255, 0.832);
+        }
+        .empty {
+          border-color: rgb(255, 3, 3);
+        }
+        .empty::placeholder {
+          color: rgba(213, 25, 25, 0.532);
+        }
+
         .ipt_last {
           margin-bottom: 0;
         }

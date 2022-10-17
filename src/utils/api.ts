@@ -1,5 +1,10 @@
 import http from './http';
-import type { useLogin } from '@/model/login';
+import type {
+  useLogin,
+  usecode,
+  useisrepeated,
+  useregister,
+} from '@/model/login';
 
 // 登录
 export async function useLogin(username: string, password: string) {
@@ -19,7 +24,7 @@ export async function useRegister(
   phone: string,
   email: string
 ) {
-  const res: any = await http.post('/sys/user/register', {
+  const res: useregister = await http.post('/sys/user/register', {
     username,
     password,
     nickname,
@@ -32,7 +37,7 @@ export async function useRegister(
 
 // 账户查重
 export async function useGetisRepeated(username: string) {
-  const res: any = await http.get('/sys/user/isRepeated', {
+  const res: useisrepeated = await http.get('/sys/user/isRepeated', {
     username,
   });
   console.log(res);
@@ -41,7 +46,7 @@ export async function useGetisRepeated(username: string) {
 
 // 获取验证码
 export async function useGetsendCode(email: string, nickname: string) {
-  const res: any = await http.get('/sys/user/sendCode', {
+  const res: usecode = await http.get('/sys/user/sendCode', {
     email,
     nickname,
   });
