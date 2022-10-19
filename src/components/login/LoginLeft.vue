@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
+import { Md5 } from 'ts-md5';
+// import CryptoJs from 'crypto-js';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
@@ -7,7 +9,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const useLogin = useLoginStore();
-const { site } = storeToRefs(useLogin);
+const { site, log_state } = storeToRefs(useLogin);
 const { useuserlogin } = useLogin;
 
 const form = reactive({
@@ -42,7 +44,11 @@ const toggle = () => {
 };
 
 const login = async () => {
-  await useuserlogin(form.account, form.password).then(() => {
+  // const md5: any = new Md5();
+  // md5.appendAsciiStr(form.password); //password 密码
+  // const md5pwd = md5.end(); // 加密后的md5 密码
+  // const password = CryptoJs.enc.Hex.stringify(CryptoJs.HmacMD5(md5pwd, ''));
+  await useuserlogin(form.account, Md5.hashStr(form.password)).then(() => {
     if (sessionStorage.getItem('message') === '操作成功') {
       router.push('/fox/home');
     }
@@ -55,7 +61,12 @@ const login = async () => {
     <div class="left_box">
       <div class="top">登录</div>
       <div class="center">
-        <div class="account">账号</div>
+        <div class="account">
+          账号<span style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.account === 1 ? '账号不能为空' : ''
+            }}{{ log_state }}</span
+          >
+        </div>
         <input
           v-model="form.account"
           :class="form_status.account === 1 ? 'empty' : ''"
@@ -63,14 +74,21 @@ const login = async () => {
           type="text"
           placeholder="请输入"
           @blur="isempty('account')"
+          @focus="log_state = ''"
         />
-        <div class="password">密码</div>
+        <div class="password">
+          密码<span style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.password === 1 ? '密码不能为空' : ''
+            }}{{ log_state }}</span
+          >
+        </div>
         <input
           v-model="form.password"
           :class="form_status.password === 1 ? 'empty' : ''"
-          type="text"
+          type="password"
           placeholder="请输入"
           @blur="isempty('password')"
+          @focus="log_state = ''"
         />
       </div>
       <div class="bottom">

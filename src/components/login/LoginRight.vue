@@ -2,9 +2,20 @@
 import { ref, reactive } from 'vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
+import { useGetisRepeated } from '@/utils/api';
+import { Md5 } from 'ts-md5';
 const useLogin = useLoginStore();
-const { site, sendcode, isrepeated, register_status } = storeToRefs(useLogin);
-const { useRegister, useGetisRepeated, useGetsendCode } = useLogin;
+const { site, sendcode, register_status, register_data } =
+  storeToRefs(useLogin);
+const { useRegister, useGetsendCode } = useLogin;
+
+const isrepeated = ref(false);
+const tel_rule = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
+let tel_status = ref(0);
+
+const email_rule =
+  /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+let email_status = ref(0);
 
 const form = reactive({
   nickname: '',
@@ -35,10 +46,10 @@ const toggle = () => {
 };
 
 // 账号查重
-const getisrepeated = () => {
-  if (form.account !== '') {
-    useGetisRepeated(form.account);
-  }
+const getisrepeated = async () => {
+  await useGetisRepeated(form.account).then((res) => {
+    isrepeated.value = res.data;
+  });
 };
 
 const isempty = (item: string) => {
@@ -66,6 +77,7 @@ const isempty = (item: string) => {
   if (item === 'tel') {
     if (form.tel !== '') {
       form_status.tel = 0;
+      tel_rule.test(form.tel) ? (tel_status.value = 0) : (tel_status.value = 1);
     } else {
       form_status.tel = 1;
     }
@@ -73,6 +85,9 @@ const isempty = (item: string) => {
   if (item === 'email') {
     if (form.email !== '') {
       form_status.email = 0;
+      email_rule.test(form.email)
+        ? (email_status.value = 0)
+        : (email_status.value = 1);
     } else {
       form_status.email = 1;
     }
@@ -87,7 +102,7 @@ const isempty = (item: string) => {
 };
 
 const getCode = async () => {
-  await useGetsendCode(form.email, form.nickname).then(() => {
+  if (form.email !== '' && email_status.value === 0) {
     get.value = true;
     const remove = setInterval(() => {
       code.value--;
@@ -97,7 +112,8 @@ const getCode = async () => {
         clearInterval(remove);
       }
     }, 1000);
-  });
+    await useGetsendCode(form.email, form.nickname).then(() => {});
+  }
 };
 
 const register = async () => {
@@ -110,18 +126,27 @@ const register = async () => {
       form.sendcode !== ''
   );
 
-  const issendcode = form.sendcode === sendcode.value;
+  const email_tel = email_status.value === 0 && tel_status.value === 0;
 
-  if (isfulled.value && issendcode && isrepeated.value === false) {
+  // const issendcode = form.sendcode === sendcode.value;
+
+  if (isfulled.value && email_tel && isrepeated.value === false) {
     await useRegister(
       form.account,
-      form.password,
+      Md5.hashStr(form.password),
       form.nickname,
       form.tel,
-      form.email
+      form.email,
+      form.sendcode
     ).then(() => {
-      if (register_status.value) {
+      if (register_status.value === true) {
         finish.value = true;
+        form.account = '';
+        form.email = '';
+        form.nickname = '';
+        form.password = '';
+        form.sendcode = '';
+        form.tel = '';
       }
     });
   }
@@ -134,7 +159,12 @@ const register = async () => {
     <div v-if="!finish" :class="'left_box'">
       <div class="top">注册</div>
       <div class="center">
-        <div class="nickname"><span>*</span>昵称</div>
+        <div class="nickname">
+          <span>*</span>昵称<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.nickname === 1 ? '昵称不能为空' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.nickname"
@@ -144,51 +174,82 @@ const register = async () => {
             @blur="isempty('nickname')"
           />
         </div>
-        <div class="account"><span>*</span>账号</div>
+        <div class="account">
+          <span>*</span>账号<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ isrepeated ? '该账号已存在' : ''
+            }}{{ form_status.account === 1 ? '账号不能为空' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.account"
-            :class="form_status.account === 1 ? 'empty' : ''"
+            :class="form_status.account === 1 || isrepeated ? 'empty' : ''"
             type="text"
             placeholder="请输入"
             @blur="getisrepeated(), isempty('account')"
           />
         </div>
-        <div class="password"><span>*</span>密码</div>
+        <div class="password">
+          <span>*</span>密码<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.password === 1 ? '密码不能为空' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.password"
             :class="form_status.password === 1 ? 'empty' : ''"
-            type="text"
+            type="password"
             placeholder="请输入"
             @blur="isempty('password')"
           />
         </div>
-        <div class="tel"><span>*</span>手机号码</div>
+        <div class="tel">
+          <span>*</span>手机号码<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.tel === 1 ? '手机号码不能为空' : ''
+            }}{{ tel_status === 1 ? '请输入正确的手机号码' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.tel"
-            :class="form_status.tel === 1 ? 'empty' : ''"
+            :class="form_status.tel === 1 || tel_status === 1 ? 'empty' : ''"
             type="text"
             placeholder="请输入"
             @blur="isempty('tel')"
           />
         </div>
-        <div class="email"><span>*</span>邮箱</div>
+        <div class="email">
+          <span>*</span>邮箱<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.email === 1 ? '邮箱不能为空' : ''
+            }}{{ email_status === 1 ? '请输入正确的邮箱' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.email"
-            :class="form_status.email === 1 ? 'empty' : ''"
+            :class="
+              form_status.email === 1 || email_status === 1 ? 'empty' : ''
+            "
             type="text"
             class="mail"
             placeholder="请输入"
             @blur="isempty('email')"
-          /><i v-show="!get" @click="getCode">获取验证码</i
+          /><i v-show="!get" @click="getCode(), isempty('email')">获取验证码</i
           ><i v-show="get" style="text-decoration: none; padding: 0 10px"
             >{{ code }} S</i
           >
         </div>
-        <div class="sendcode"><span>*</span>验证码</div>
+        <div class="sendcode">
+          <span>*</span>验证码<span
+            style="color: red; font-size: 12px; margin-left: 10px"
+            >{{ form_status.sendcode === 1 ? '验证码不能为空' : ''
+            }}{{ register_data === '验证码错误' ? '验证码错误' : '' }}</span
+          >
+        </div>
         <div class="input">
           <input
             v-model="form.sendcode"

@@ -22,7 +22,8 @@ export async function useRegister(
   password: string,
   nickname: string,
   phone: string,
-  email: string
+  email: string,
+  code: string
 ) {
   const res: useregister = await http.post('/sys/user/register', {
     username,
@@ -30,6 +31,7 @@ export async function useRegister(
     nickname,
     phone,
     email,
+    code,
   });
   console.log(res);
   return res;
