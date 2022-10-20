@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useGetisRepeated } from '@/utils/api';
 import { Md5 } from 'ts-md5';
 const useLogin = useLoginStore();
-const { site, sendcode, register_status, register_data } =
+const { site, fail_message, register_status, register_data } =
   storeToRefs(useLogin);
 const { useRegister, useGetsendCode } = useLogin;
 
@@ -34,7 +34,7 @@ const form_status = reactive({
   sendcode: 0,
 });
 
-const finish = ref(false);
+const finish = ref(0);
 
 const code = ref(60);
 
@@ -42,7 +42,7 @@ const get = ref(false);
 
 const toggle = () => {
   site.value === 'left' ? (site.value = 'right') : (site.value = 'left');
-  finish.value = false;
+  finish.value = 0;
 };
 
 // 账号查重
@@ -140,13 +140,15 @@ const register = async () => {
       form.sendcode
     ).then(() => {
       if (register_status.value === true) {
-        finish.value = true;
+        finish.value = 1;
         form.account = '';
         form.email = '';
         form.nickname = '';
         form.password = '';
         form.sendcode = '';
         form.tel = '';
+      } else {
+        finish.value = 2;
       }
     });
   }
@@ -156,7 +158,7 @@ const register = async () => {
 <template>
   <div class="login_left">
     <!-- 注册 -->
-    <div v-if="!finish" :class="'left_box'">
+    <div v-if="finish === 0" :class="'left_box'">
       <div class="top">注册</div>
       <div class="center">
         <div class="nickname">
@@ -268,9 +270,20 @@ const register = async () => {
     </div>
     <!-- 注册成功 -->
     <transition name="panel">
-      <div v-if="finish" class="success">
+      <div v-if="finish === 1" class="success">
         <div class="tubiao iconfont icon-gou"></div>
         <div class="text">注册成功</div>
+        <button @click="toggle">点击登录</button>
+      </div>
+    </transition>
+    <transition name="panel">
+      <div v-if="finish === 2" class="success">
+        <div
+          class="tubiao iconfont icon-chacha"
+          style="border-color: #d81e06; line-height: 46px"
+        ></div>
+        <div class="text" style="color: #d81e06">注册失败</div>
+        <div class="text" style="color: #d81e06">{{ fail_message }}</div>
         <button @click="toggle">点击登录</button>
       </div>
     </transition>

@@ -10,6 +10,7 @@ export const useLoginStore = defineStore({
     sendcode: '',
     register_status: false,
     register_data: '',
+    fail_message: '',
   }),
   actions: {
     // 登录
@@ -43,6 +44,7 @@ export const useLoginStore = defineStore({
           this.register_status = res.success;
           if (res.success === false) {
             this.register_data = res.data;
+            this.fail_message = res.data;
           }
         }
       );
