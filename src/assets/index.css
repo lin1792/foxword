@@ -3,6 +3,11 @@
   src: url("@/assets/font-family/YouSheBiaoTiHei.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "zhankucangeryuyang";
+  src: url("@/assets/font-family/zhankucangeryuyang.ttf") format("truetype");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,10 +22,13 @@
   user-select: none;
 
   box-sizing: border-box;
+
+  color: #fff;
 }
 
 input {
   outline: none;
+  color: #000;
 }
 
 li {

@@ -121,7 +121,7 @@ const options = reactive({
 });
 </script>
 <template>
-  <div class="container" v-lazy:background-image="img091">
+  <div class="container" v-lazy:background-image="">
     <el-scrollbar class="ad">
       <transition name="panel">
         <router-view name="common"></router-view>
@@ -149,7 +149,8 @@ const options = reactive({
 
 .container {
   width: 100vw;
-  height: 100vh;
+  height: auto;
+  // background-color: rgb(250, 235, 215);
   background-size: cover;
   :deep(.el-scrollbar__bar.is-vertical) {
     width: 6px;

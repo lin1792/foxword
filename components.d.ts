@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     Head: typeof import('./src/components/header/head.vue')['default']
+    HeaderNav: typeof import('./src/components/header/HeaderNav.vue')['default']
     HeadNav: typeof import('./src/components/header/HeadNav.vue')['default']
     HomeContent: typeof import('./src/components/home/HomeContent.vue')['default']
     LoginCover: typeof import('./src/components/login/LoginCover.vue')['default']

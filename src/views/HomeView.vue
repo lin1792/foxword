@@ -45,7 +45,9 @@ const nextpage = () => {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  // background-color: rgb(250, 235, 215);
+
   background-size: cover;
   transition: top 3s ease;
   h1 {

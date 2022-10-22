@@ -55,13 +55,17 @@
   animation: leftcontent 1s ease 0s 1 normal forwards;
   ul {
     li {
+      color: #000;
       div {
+        color: #000;
+
         margin-bottom: 12px;
       }
       ul {
         padding: 0 20px;
         font-size: 18px;
         li {
+          color: #000;
           margin-bottom: 20px;
         }
       }
@@ -69,17 +73,23 @@
     .one_title {
       margin-bottom: 20px;
       .iconfont {
+        color: #000;
+
         font-size: 24px;
       }
     }
     .tow_title {
       margin-bottom: 20px;
       .iconfont {
+        color: #000;
+
         font-size: 21px;
       }
     }
     .three_title {
       .iconfont {
+        color: #000;
+
         font-size: 18px;
       }
     }

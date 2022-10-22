@@ -51,20 +51,6 @@ onMounted(() => {
 </script>
 <template>
   <div class="container">
-    <div class="cover"></div>
-    <div class="img" v-lazy:background-image="as">
-      {{ newWelcom }}
-      <div class="total">
-        <div class="top">
-          <span class="iconfont icon-word">总字数 1232</span
-          ><span class="iconfont icon-zonghaoshishichang">时长 5</span>
-        </div>
-        <div class="bottom">
-          <span class="iconfont icon-qiapianshuliang">发布数 2</span
-          ><span class="iconfont icon-tongji">总阅读数 2</span>
-        </div>
-      </div>
-    </div>
     <div class="content">
       <div class="main">
         <div class="left">
@@ -92,65 +78,6 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .container {
-  position: relative;
-  .cover {
-    width: 100vw;
-    height: 330px;
-    background-color: transparent;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: rgb(0 0 0 / 20%) 0px 18px 50px -10px;
-  }
-  .img {
-    position: absolute;
-    top: -100px;
-    width: 100vw;
-    height: 330px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 -15vh;
-    text-align: center;
-    line-height: 260px;
-    font-size: 50px;
-    font-style: italic;
-    letter-spacing: 2px;
-    color: #00fefe;
-    transition: background-image 1s linear;
-    animation: imgheight 1s linear 0s 1 normal forwards;
-    .total {
-      position: absolute;
-      left: calc(50vw - 150px);
-      bottom: 20px;
-      width: 350px;
-      height: 50px;
-      // background-color: #fff;
-      z-index: 999;
-      div {
-        display: flex;
-        justify-content: center;
-        span {
-          margin-right: 30px;
-          font-size: 18px;
-          line-height: 30px;
-          color: #00fefe;
-        }
-        span:nth-last-child(1) {
-          margin-right: 0;
-        }
-      }
-    }
-  }
-  @keyframes imgheight {
-    0% {
-      opacity: 0;
-      top: -100px;
-    }
-    100% {
-      opacity: 1;
-      top: 0;
-    }
-  }
-
   .content {
     display: flex;
     justify-content: center;
