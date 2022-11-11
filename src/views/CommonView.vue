@@ -3,9 +3,10 @@ import HeaderNav from '../components/header/HeaderNav.vue';
 import FriendsView from './FriendsView.vue';
 import { useHeaderNavStore } from '@/stores/HeaderNav';
 import { storeToRefs } from 'pinia';
+import AddFriends from '../components/friend/AddFriends.vue';
 
 const useHeaderNav = useHeaderNavStore();
-const { friends_open } = storeToRefs(useHeaderNav);
+const { friends_open, add_friend } = storeToRefs(useHeaderNav);
 </script>
 
 <template>
@@ -13,16 +14,20 @@ const { friends_open } = storeToRefs(useHeaderNav);
     <header>
       <HeaderNav />
     </header>
-    <transition name="friend">
-      <div v-if="friends_open" class="friends">
-        <FriendsView />
-      </div>
-    </transition>
+
     <main>
       <transition name="panel">
         <router-view name="content"></router-view>
       </transition>
     </main>
+    <div :class="'friends' + (friends_open === true ? ' open' : '')">
+      <FriendsView />
+    </div>
+    <transition name="panel">
+      <div v-if="add_friend" class="addfriend">
+        <AddFriends />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -35,13 +40,32 @@ const { friends_open } = storeToRefs(useHeaderNav);
   }
   .friends {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    height: calc(100vh - 60px);
-    z-index: 99;
+    bottom: 90px;
+    right: -230px;
+    // right: 100px;
+    width: 0px;
+    height: 500px;
+    overflow: hidden;
+    // background-color: #fff;
+    transition: all 0.5s ease;
   }
+  .open {
+    right: 100px;
+    width: 230px;
+    transition: all 0.5s linear;
+  }
+
   main {
     height: calc(100vh - 65px);
+  }
+  .addfriend {
+    position: absolute;
+    left: 20%;
+    top: calc(20%);
+    width: 50%;
+    height: 60%;
+    border-radius: 10px;
+    overflow: hidden;
   }
 }
 .panel-enter-from {
@@ -52,24 +76,5 @@ const { friends_open } = storeToRefs(useHeaderNav);
 }
 .panel-enter-to {
   opacity: 1;
-}
-
-.friend-enter-from {
-  width: 0;
-}
-.friend-enter-active {
-  transition: all 0.2s ease;
-}
-.friend-enter-to {
-  width: 230px;
-}
-.friend-leave-from {
-  width: 230px;
-}
-.friend-leave-active {
-  transition: all 0.2s ease;
-}
-.friend-leave-to {
-  width: 0;
 }
 </style>

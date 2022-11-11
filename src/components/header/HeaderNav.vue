@@ -60,11 +60,85 @@ const logout = () => {
           <span class="iconfont icon-sousuo"></span>
           <input type="text" placeholder="搜索" />
         </li>
-        <li @click="home">首页</li>
-        <li @click="logs">日志</li>
-        <li @click="study">学习</li>
-        <li @click="colect">收藏</li>
-        <li @click="friends">王Rong</li>
+        <li
+          :class="
+            router.currentRoute.value.fullPath === '/fox/home'
+              ? 'is_active'
+              : ''
+          "
+          @click="home"
+        >
+          <span
+            :class="
+              ' iconfont' +
+              ' icon-shouye' +
+              (router.currentRoute.value.fullPath === '/fox/home'
+                ? ' is_acitve_img'
+                : '')
+            "
+          ></span
+          >首页
+        </li>
+        <li
+          :class="
+            router.currentRoute.value.fullPath === '/fox/logs'
+              ? 'is_active'
+              : ''
+          "
+          @click="logs"
+        >
+          <span
+            :class="
+              ' iconfont' +
+              ' icon-rizhi' +
+              (router.currentRoute.value.fullPath === '/fox/logs'
+                ? ' is_acitve_img'
+                : '')
+            "
+          ></span
+          >日志
+        </li>
+        <li
+          :class="
+            router.currentRoute.value.fullPath === '/fox/study'
+              ? 'is_active'
+              : ''
+          "
+          @click="study"
+        >
+          <span
+            :class="
+              ' iconfont' +
+              ' icon-xuexizhongxin' +
+              (router.currentRoute.value.fullPath === '/fox/study'
+                ? ' is_acitve_img'
+                : '')
+            "
+          ></span
+          >学习
+        </li>
+        <li
+          @click="colect"
+          :class="
+            router.currentRoute.value.fullPath === '/fox/colect'
+              ? 'is_active'
+              : ''
+          "
+        >
+          <span
+            :class="
+              ' iconfont' +
+              ' icon-shoucang' +
+              (router.currentRoute.value.fullPath === '/fox/colect'
+                ? ' is_acitve_img'
+                : '')
+            "
+          ></span
+          >收藏
+        </li>
+        <li @click="friends">
+          <span class="iconfont icon-gerenzhongxin-gerenxinxi"></span>王Rong
+        </li>
       </ul>
     </div>
   </div>
@@ -170,7 +244,7 @@ const logout = () => {
     overflow: hidden;
     font-size: 26px;
     .logo {
-      font-family: 'zhankucangeryuyang';
+      font-family: 'YunFengfeiyunti';
       font-weight: 900;
       font-style: italic;
       letter-spacing: 3px;
@@ -179,12 +253,27 @@ const logout = () => {
     .main_menu {
       display: flex;
       li {
+        display: flex;
+        align-items: center;
         height: 30px;
         margin-left: 30px;
         font-size: 20px;
-        font-weight: 700;
-        font-family: 'zhankucangeryuyang';
+        font-weight: 500;
+        // font-family: 'zhankucangeryuyang';
+        font-family: 'YunFengfeiyunti';
         cursor: pointer;
+        transition: all 0.3s ease;
+        span {
+          margin-right: 5px;
+          transition: all 0.3s ease;
+        }
+        .is_acitve_img {
+          color: deeppink;
+        }
+      }
+      .is_active {
+        padding-bottom: 10px;
+        color: deeppink;
       }
       .search {
         position: relative;

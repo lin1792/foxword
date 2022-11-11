@@ -7,11 +7,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AddFriends: typeof import('./src/components/friend/AddFriends.vue')['default']
     CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
     copy: typeof import('./src/components/login/LoginLeft copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    FriendsList: typeof import('./src/components/friend/FriendsList.vue')['default']
     Head: typeof import('./src/components/header/head.vue')['default']
     HeaderNav: typeof import('./src/components/header/HeaderNav.vue')['default']
     HeadNav: typeof import('./src/components/header/HeadNav.vue')['default']

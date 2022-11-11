@@ -56,6 +56,49 @@ export async function useGetsendCode(email: string, nickname: string) {
   return res;
 }
 
+// 添加好友
+export async function useaddFriend(senderId: string, recipientId: string) {
+  const res: any = await http.get('/sys/user/addFriend', {
+    senderId,
+    recipientId,
+  });
+  console.log(res);
+  return res;
+}
+// 查询好友列表
+export async function usesearchFriendsList(userId: string) {
+  const res: any = await http.get('/sys/user/selectUserFriendsList', {
+    userId,
+  });
+  console.log(res);
+  return res;
+}
+// 查找用户
+export async function usesearchFriends(username: string) {
+  const res: any = await http.get('/sys/user/selectUserByUsername', {
+    username,
+  });
+  console.log(res);
+  return res;
+}
+// 根据id查找用户
+export async function usesearchFriendsbyId(userId: string) {
+  const res: any = await http.get('/sys/user/selectFriendRequestByUserId', {
+    userId,
+  });
+  console.log(res);
+  return res;
+}
+
+// 同意添加好友
+export async function useApproveFriendRequest(id: string) {
+  const res: any = await http.get('/sys/user/approveFriendRequest', {
+    id,
+  });
+  console.log(res);
+  return res;
+}
+
 // 测试接口
 export async function useCeshi(username: string) {
   const res: any = await http.get('/sys/user/isRepeated', {

@@ -17,20 +17,11 @@ const as = setInterval(() => {
 }, 100);
 
 let next = ref(false);
-const nextpage = () => {
-  next.value = true;
-  console.log(next);
-
-  setTimeout(() => {
-    router.push('/fox/logs');
-  }, 1000);
-};
 </script>
 
 <template>
   <div :class="'home_container' + (next === true ? ' nextpage' : '')">
     <h1>{{ newword }}</h1>
-    <div class="iconfont icon-jiantouxia" @click="nextpage"></div>
   </div>
 </template>
 
@@ -54,19 +45,7 @@ const nextpage = () => {
     font-family: YouSheBiaoTiHei;
     font-size: 50px;
     font-weight: 400;
-    color: aqua;
-  }
-  .iconfont {
-    position: absolute;
-    bottom: 0;
-    left: 48vw;
-    font-size: 50px;
-    opacity: 0.7;
-    cursor: pointer;
-    transition: all 0.5s linear;
-  }
-  .iconfont:hover {
-    opacity: 1;
+    color: #fff;
   }
 }
 </style>

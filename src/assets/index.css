@@ -8,6 +8,11 @@
   src: url("@/assets/font-family/zhankucangeryuyang.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "YunFengfeiyunti";
+  src: url("@/assets/font-family/YunFengfeiyunti.TTF") format("truetype");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -24,6 +29,11 @@
   box-sizing: border-box;
 
   color: #fff;
+  font-family: 'zhankucangeryuyang';
+}
+
+i {
+  font-style: normal;
 }
 
 input {
